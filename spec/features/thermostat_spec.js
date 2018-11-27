@@ -30,6 +30,20 @@ describe('Thermostat', function() {
       thermostat.up();
       expect(thermostat.reading()).toEqual(25);
     });
+
+    it('powerSavingMode is set to false when off',function() {
+      thermostat.powerSavingOff();
+      expect(thermostat.isPowerSavingOn()).toBe(false);
+    });
+
+    it('changes maximum temperature to 32 when off', function() {
+      thermostat.powerSavingOff();
+      while(thermostat.reading() < 32) {
+        thermostat.up();
+      }
+      thermostat.up();
+      expect(thermostat.reading()).toEqual(32);
+    });
   });
 
   describe('Down function', function() {
@@ -44,6 +58,37 @@ describe('Thermostat', function() {
       }
       thermostat.down();
       expect(thermostat.reading()).toEqual(10);
+    });
+  });
+
+  describe('reset function', function(){
+    it('resets temperature to default', function() {
+      while(thermostat.reading() > 10) {
+        thermostat.down();
+      }
+      thermostat.resetTemperature();
+      expect(thermostat.reading()).toEqual(default_temp);
+    });
+  });
+
+  describe('Energy usage', function(){
+    it('returns "low-usage" if temperature is < 18', function() {
+      while(thermostat.reading() > 17) {
+        thermostat.down();
+      }
+      expect(thermostat.energyUsage()).toEqual('low-usage');
+    });
+    it('returns "medium-usage" if temperature is < 25', function() {
+      while(thermostat.reading() < 24) {
+        thermostat.up();
+      }
+      expect(thermostat.energyUsage()).toEqual('medium-usage');
+    });
+    it('returns "high-usage" if temperature is >= 25', function() {
+      while(thermostat.reading() < 25) {
+        thermostat.up();
+      }
+      expect(thermostat.energyUsage()).toEqual('high-usage');
     });
   });
 });

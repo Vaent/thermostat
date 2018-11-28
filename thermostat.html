@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    div#display { font-size:50px; font-family:arial; }
+    button { width: 100px; font-size:20px; }
+  </style>
+</head>
+<body>
+
+<div id="display">
+</div>
+
+<button type=button name="up" onclick="up()">Up</button>
+<br>
+<button type=button name="down" onclick="down()">Down</button>
+<br>
+<button type=button name="psm_on" onclick="psmOn()">PSM on</button>
+<br>
+<button type=button name="psm_off" onclick="psmOff()">PSM off</button>
+<br>
+<button type=button name="reset" onclick="reset()">Reset</button>
+<br>
+<button type=button name="energy_usage" onclick="energyUsage()">Energy usage</button>
+
+<script src="src/thermostat.js"></script>
+<script>
+  thermostat = new Thermostat;
+  function updateDisplay() {
+    document.getElementById("display").innerHTML =
+      thermostat.reading();
+  };
+  updateDisplay();
+  function up() {
+    thermostat.up();
+    updateDisplay();
+  };
+  function down() {
+    thermostat.down();
+    updateDisplay();
+  };
+  function psmOn() {
+    thermostat.powerSavingOn();
+    updateDisplay();
+  };
+  function psmOff() {
+    thermostat.powerSavingOff();
+    updateDisplay();
+  };
+  function reset() {
+    thermostat.resetTemperature();
+    updateDisplay();
+  };
+  function energyUsage() {
+    alert(thermostat.energyUsage());
+  };
+</script>
+
+</body>
+</html>
